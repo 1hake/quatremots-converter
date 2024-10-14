@@ -12,6 +12,7 @@ services:
             - 'traefik.http.services.lovehour_api.loadbalancer.server.port=8000'
         networks:
             - webnet
+        command: tail -f /dev/null
 
 networks:
     webnet:
