@@ -45,7 +45,6 @@ jobs:
                   username: ${{ secrets.SSH_USER }}
                   key: ${{ secrets.SSH_PRIVATE_KEY_NOPW }}
                   script: |
-                      echo "${{ secrets.POSTGRESQL_CONF }}" | docker config create postgresql-v2.conf -
                       cd qm-converter
                       docker stack deploy -c docker-compose.yml -c docker-compose.swarm.yml qm-stack
                       docker service update --image thegobc/:latest --force qm-stack_qm_converter
