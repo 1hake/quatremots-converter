@@ -1,5 +1,5 @@
-# Use an official Node.js runtime as a parent image
-FROM node:18-buster
+# Use the latest Node.js runtime as a parent image
+FROM node:18
 
 # Install FFmpeg
 RUN apt-get update && \
@@ -9,11 +9,14 @@ RUN apt-get update && \
 # Create and set the working directory
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to install dependencies
-COPY package*.json ./
+# Copy package.json and yarn.lock to install dependencies using yarn
+COPY package.json yarn.lock ./
 
-# Install Node.js dependencies
-RUN npm install --production
+# Install Node.js dependencies using yarn
+RUN yarn install
+
+# Install ts-node, typescript globally for transpiling TypeScript
+RUN yarn global add ts-node typescript
 
 # Copy the rest of the application code
 COPY . .
@@ -22,4 +25,4 @@ COPY . .
 EXPOSE 3000
 
 # Command to run the Node.js app
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
