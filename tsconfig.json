@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "module": "NodeNext",
+        "target": "ESNext",
+        "strict": true,
+        "esModuleInterop": true,
+        "moduleResolution": "NodeNext" // Ajoute cette ligne
+    },
+    "include": [
+        "src/**/*" // ou le chemin vers tes fichiers
+    ]
+}
