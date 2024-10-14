@@ -1,0 +1,6 @@
+services:
+    quatremots-converter:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: thegobc/qm-converter

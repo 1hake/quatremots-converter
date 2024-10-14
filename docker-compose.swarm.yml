@@ -1,0 +1,18 @@
+services:
+    quatremots-converter:
+        deploy:
+            replicas: 1
+            restart_policy:
+                condition: on-failure
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.http.routers.lovehour_api.rule=Host(`converter.qm.gobc.fr`)'
+            - 'traefik.http.routers.lovehour_api.entrypoints=websecure'
+            - 'traefik.http.routers.lovehour_api.tls.certresolver=myresolver'
+            - 'traefik.http.services.lovehour_api.loadbalancer.server.port=8000'
+        networks:
+            - webnet
+
+networks:
+    webnet:
+        external: true

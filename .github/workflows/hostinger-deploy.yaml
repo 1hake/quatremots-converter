@@ -1,0 +1,51 @@
+name: CI/CD Pipeline
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build_and_deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v1
+
+            - name: Login to Docker Hub
+              uses: docker/login-action@v1
+              with:
+                  username: ${{ secrets.DOCKER_USERNAME }}
+                  password: ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Build and push Docker image
+              uses: docker/build-push-action@v2
+              with:
+                  context: .
+                  push: true
+                  tags: thegobc/qm-converter:latest
+
+            - name: Copy docker-compose files to server
+              uses: appleboy/scp-action@v0.1.7
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_PRIVATE_KEY_NOPW }}
+                  source: './docker-compose.yml,./docker-compose.swarm.yml'
+                  target: '~/qm-converter/'
+
+            - name: SSH and update Docker Swarm service
+              uses: appleboy/ssh-action@v0.1.6
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_PRIVATE_KEY_NOPW }}
+                  script: |
+                      echo "${{ secrets.POSTGRESQL_CONF }}" | docker config create postgresql-v2.conf -
+                      cd qm-converter
+                      docker stack deploy -c docker-compose.yml -c docker-compose.swarm.yml qm-stack
+                      docker service update --image thegobc/:latest --force qm-stack_qm_converter

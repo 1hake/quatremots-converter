@@ -1,5 +1,5 @@
 # Use the latest Node.js runtime as a parent image
-FROM node:18
+FROM --platform=linux/amd64 node:18
 
 # Install FFmpeg
 RUN apt-get update && \
