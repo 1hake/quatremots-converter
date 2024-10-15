@@ -6,10 +6,10 @@ services:
                 condition: on-failure
         labels:
             - 'traefik.enable=true'
-            - 'traefik.http.routers.lovehour_api.rule=Host(`converter.qm.gobc.fr`)'
-            - 'traefik.http.routers.lovehour_api.entrypoints=websecure'
-            - 'traefik.http.routers.lovehour_api.tls.certresolver=myresolver'
-            - 'traefik.http.services.lovehour_api.loadbalancer.server.port=8000'
+            - 'traefik.http.routers.qm_converter.rule=Host(`converter.qm.gobc.fr`)'
+            - 'traefik.http.routers.qm_converter.entrypoints=websecure'
+            - 'traefik.http.routers.qm_converter.tls.certresolver=myresolver'
+            - 'traefik.http.services.qm_converter.loadbalancer.server.port=8000'
         networks:
             - webnet
         command: tail -f /dev/null
