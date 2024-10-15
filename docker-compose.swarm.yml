@@ -9,7 +9,7 @@ services:
             - 'traefik.http.routers.qm_converter.rule=Host(`converter.qm.gobc.fr`)'
             - 'traefik.http.routers.qm_converter.entrypoints=websecure'
             - 'traefik.http.routers.qm_converter.tls.certresolver=myresolver'
-            - 'traefik.http.services.qm_converter.loadbalancer.server.port=8000'
+            - 'traefik.http.services.qm_converter.loadbalancer.server.port=3000'
         networks:
             - webnet
         command: tail -f /dev/null
