@@ -32,8 +32,8 @@ jobs:
             - name: Copy docker-compose files to server
               uses: appleboy/scp-action@v0.1.7
               with:
-                  host: '${{ secrets.SSH_HOST }}'
-                  username: '${{ secrets.SSH_USER }}'
+                  host: '92.113.25.5'
+                  username: 'root'
                   key: ${{ secrets.SSH_PRIVATE_KEY_NOPW }}
                   source: './docker-compose.yml,./docker-compose.swarm.yml'
                   target: '~/qm-converter/'
@@ -41,8 +41,8 @@ jobs:
             - name: SSH and update Docker Swarm service
               uses: appleboy/ssh-action@v0.1.6
               with:
-                  host: '${{ secrets.SSH_HOST }}'
-                  username: '${{ secrets.SSH_USER }}'
+                  host: '92.113.25.5'
+                  username: 'root'
                   key: ${{ secrets.SSH_PRIVATE_KEY_NOPW }}
                   script: |
                       cd qm-converter
